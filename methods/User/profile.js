@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 const asyncHandler = require("../../middlewares/async");
-const User = require("../../models/User");
+const User = require("../../models/User/User");
 
 //REGISTER USER API
 const methods = {
@@ -32,10 +32,25 @@ const methods = {
     }
   }),
 
-  //----- Forgot Password -----//
+  //----- Edit Profile -----//
   editProfile: asyncHandler(async (req, res, next) => {
-    const { name, email, phone, logo, footerText, socialMediaLinks } =
-      req.body.props;
+    try {
+      const { name, email, image } = req.body.props;
+      let user = req.user;
+      if (name) {
+        user.name = name;
+      }
+      if (email) {
+        user.email = email;
+      }
+      if (image) {
+        user.profileImage = image;
+      }
+      await user.save();
+      return res.status(200).json({ message: "profile updated successfully!" });
+    } catch (err) {
+      next(err);
+    }
   }),
 };
 module.exports = methods;

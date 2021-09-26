@@ -18,6 +18,12 @@ const SiteSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
+  video: [
+    {
+      title: String,
+      buttonLink: String,
+    },
+  ],
   address: {
     street: { type: String, required: false },
     city: { type: String, required: false },
@@ -26,6 +32,15 @@ const SiteSchema = new mongoose.Schema({
     longitude: { type: Number, required: false },
   },
   footer: {
+    type: String,
+  },
+  url: {
+    type: String,
+  },
+  slogan: {
+    type: String,
+  },
+  copyright: {
     type: String,
   },
 

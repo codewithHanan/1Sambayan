@@ -3,7 +3,7 @@ const crypto = require("crypto");
 // const async = require("async");
 const Joi = require("joi");
 const asyncHandler = require("../../middlewares/async");
-const User = require("../../models/User");
+const User = require("../../models/User/User");
 
 //REGISTER USER API
 const methods = {

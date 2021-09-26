@@ -42,12 +42,18 @@ app.use(passport.session());
 const auth = require("./routes/pub/auth");
 const user = require("./routes/secure/user");
 const site = require("./routes/secure/site");
+const post = require("./routes/secure/post");
+const event = require("./routes/secure/event");
+const community = require("./routes/secure/community");
 
 //----- Mount Routers -----//
 
 app.use("/api/pub/auth", auth);
 app.use("/api/secure/user", user);
 app.use("/api/secure/site", site);
+app.use("/api/secure/post", post);
+app.use("/api/secure/event", event);
+app.use("/api/secure/community", community);
 
 //// Error Handler
 app.use((error, req, res, next) => {
