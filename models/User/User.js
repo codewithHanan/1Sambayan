@@ -4,11 +4,11 @@ const jwt = require("jsonwebtoken");
 
 // USERS SCHEMA
 const UserSchema = new mongoose.Schema({
-  name: {
+  firstName: {
     type: String,
     required: false,
   },
-  username: {
+  lastName: {
     type: String,
     required: false,
   },
@@ -27,6 +27,13 @@ const UserSchema = new mongoose.Schema({
   },
 
   profileImage: {
+    type: String,
+  },
+
+  fbLink: {
+    type: String,
+  },
+  profession: {
     type: String,
   },
 

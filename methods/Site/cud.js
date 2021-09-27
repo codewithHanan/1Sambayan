@@ -2,7 +2,8 @@ const nodemailer = require("nodemailer");
 const asyncHandler = require("../../middlewares/async");
 const Site = require("../../models/Site/Site");
 const SiteHeader = require("../../models/Site/Header");
-
+const SitePage = require("../../models/Site/Page");
+const { findById } = require("../../models/Site/Site");
 const siteMethods = {
   //----- Create site -----//
   create: asyncHandler(async (req, res, next) => {
@@ -200,4 +201,85 @@ const siteHeaderMethods = {
   }),
 };
 
-module.exports = { siteMethods, siteHeaderMethods };
+const sitePageMethods = {
+  //----- Create Site Page -----//
+  create: asyncHandler(async (req, res, next) => {
+    try {
+      const { name, sections, contentBox } = req.body.props;
+
+      const ownerId = req.user._id;
+      const site = await Site.findOne({ owner: ownerId });
+      const isPage = await SitePage.findOne({
+        $and: [
+          { name: nmae },
+          {
+            siteId: site._id,
+          },
+        ],
+      });
+      if (isPage) {
+        res.status(404).send("A Site page already registered with this name");
+      }
+      // Saving Page in DataBase
+      const sitePage = await SitePage.create({
+        name,
+        sections,
+        siteId: site._id,
+        contentBox,
+      });
+
+      res.status(200).json({ sitePage: sitePage });
+    } catch (err) {
+      next(err);
+    }
+  }),
+
+  //----- Update Site Page -----//
+  update: asyncHandler(async (req, res, next) => {
+    try {
+      const { name, sections, contentBox, pageId } = req.body.props;
+
+      const ownerId = req.user._id;
+      const site = await Site.findOne({ owner: ownerId });
+      const sitePage = await findById(pageId);
+      const isPage = await SitePage.findOne({
+        $and: [
+          { name: nmae },
+          {
+            siteId: site._id,
+          },
+        ],
+      });
+
+      if (name) {
+        sitePage.name = name;
+      }
+      if (sections) {
+        sitePage.section = sections;
+      }
+      if (contentBox) {
+        sitePage.contentBox;
+      }
+
+      const updatedSitePage = await sitePage.save();
+
+      res.status(200).json({ message: "Success!", site: updatedSitePage });
+    } catch (err) {
+      next(err);
+    }
+  }),
+
+  //----- Get Site settings document -----//
+  getPages: asyncHandler(async (req, res, next) => {
+    try {
+      const owner = req.user;
+      const site = await Site.findOne({ owner: owner._id });
+      const pages = await SitePage.find({ siteId: site._id });
+      res.status(200).json({ pages: pages });
+    } catch (err) {
+      next(err);
+    }
+  }),
+};
+
+module.exports = { siteMethods, siteHeaderMethods, sitePageMethods };

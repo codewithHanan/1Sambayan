@@ -9,26 +9,34 @@ const User = require("../../models/User/User");
 const methods = {
   registerUser: asyncHandler(async (req, res, next) => {
     try {
-      const schema = Joi.object().keys({
-        name: Joi.string().max(250).required(),
-        username: Joi.string().max(250).required(),
-        email: Joi.string().email().required(),
-        phone: Joi.string()
-          .max(10)
-          .pattern(/^[0-9]+$/)
-          .required(),
-        password: Joi.string().min(6).max(255).required(),
-        confirm_password: Joi.string().min(6).max(255).required(),
-      });
+      // const schema = Joi.object().keys({
+      //   firstName: Joi.string().max(250).required(),
+      //   firstName: Joi.string().max(250).required(),
+      //   email: Joi.string().email().required(),
+      //   phone: Joi.string()
+      //     .max(10)
+      //     .pattern(/^[0-9]+$/)
+      //     .required(),
+      //   password: Joi.string().min(6).max(255).required(),
+      //   confirm_password: Joi.string().min(6).max(255).required(),
+      // });
 
-      // Storing Error Responses in Result //
-      const results = schema.validate(req.body);
-      if (results.error) {
-        return res.status(400).send(results.error.details[0].message);
-      }
+      // // Storing Error Responses in Result //
+      // const results = schema.validate(req.body);
+      // if (results.error) {
+      //   return res.status(400).send(results.error.details[0].message);
+      // }
 
-      const { name, username, email, password, confirm_password, phone } =
-        req.body;
+      const {
+        firstName,
+        lastName,
+        email,
+        password,
+        confirm_password,
+        phone,
+        fbLink,
+        profession,
+      } = req.body;
 
       //// Check If Password and Confirm Password are same or not ////
       if (password !== confirm_password) {
@@ -42,11 +50,13 @@ const methods = {
       } else {
         // Saving User in DataBase
         const user = await User.create({
-          name,
-          username,
+          firstName,
+          lastName,
           email,
           password,
           phone,
+          fbLink,
+          profession,
         });
 
         res.status(200).json({ user: user });
