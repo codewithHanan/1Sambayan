@@ -67,6 +67,7 @@ const siteMethods = {
       } = req.body.props;
 
       const ownerId = req.user._id;
+      console.log("ownerId", ownerId);
       const site = await Site.findOne({ owner: ownerId });
 
       if (name) {
@@ -113,8 +114,7 @@ const siteMethods = {
   //----- Get Site settings document -----//
   getSite: asyncHandler(async (req, res, next) => {
     try {
-      const owner = req.user;
-      const site = await Site.findOne({ owner: owner._id });
+      const site = await Site.find();
       res.status(200).json({ site: site });
     } catch (err) {
       next(err);

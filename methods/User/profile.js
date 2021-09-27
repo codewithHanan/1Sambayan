@@ -45,7 +45,7 @@ const methods = {
   //----- Edit Profile -----//
   editProfile: asyncHandler(async (req, res, next) => {
     try {
-      let { firstName, lastName, email, image } = req.body.props;
+      let { firstName, lastName, email, image, phone } = req.body.props;
       let user = req.user;
       if (firstName) {
         user.firstName = firstName;
@@ -58,6 +58,9 @@ const methods = {
       }
       if (image) {
         user.profileImage = image;
+      }
+      if (phone) {
+        user.phone = phone;
       }
       await user.save();
       return res.status(200).json({ message: "profile updated successfully!" });
