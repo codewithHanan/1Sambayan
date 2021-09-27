@@ -45,7 +45,7 @@ const methods = {
   //----- Edit Profile -----//
   editProfile: asyncHandler(async (req, res, next) => {
     try {
-      const { firstName, lastName, email, image } = req.body.props;
+      let { firstName, lastName, email, image } = req.body.props;
       let user = req.user;
       if (firstName) {
         user.firstName = firstName;

@@ -73,12 +73,6 @@ const UserSchema = new mongoose.Schema({
   emailVerificationExpiresIn: Date,
 });
 
-//Encrypt Password
-UserSchema.pre("save", async function () {
-  const salt = await bcrypt.genSalt(10);
-  this.password = await bcrypt.hash(this.password, salt);
-});
-
 //sign JWT and return
 UserSchema.methods.getSignedJwtToken = function () {
   return jwt.sign({ id: this._id }, process.env.JWT_SECRET, {

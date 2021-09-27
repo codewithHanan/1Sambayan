@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 const crypto = require("crypto");
-// const async = require("async");
+const bcrypt = require("bcryptjs");
 const Joi = require("joi");
 const asyncHandler = require("../../middlewares/async");
 const User = require("../../models/User/User");
@@ -9,24 +9,6 @@ const User = require("../../models/User/User");
 const methods = {
   registerUser: asyncHandler(async (req, res, next) => {
     try {
-      // const schema = Joi.object().keys({
-      //   firstName: Joi.string().max(250).required(),
-      //   firstName: Joi.string().max(250).required(),
-      //   email: Joi.string().email().required(),
-      //   phone: Joi.string()
-      //     .max(10)
-      //     .pattern(/^[0-9]+$/)
-      //     .required(),
-      //   password: Joi.string().min(6).max(255).required(),
-      //   confirm_password: Joi.string().min(6).max(255).required(),
-      // });
-
-      // // Storing Error Responses in Result //
-      // const results = schema.validate(req.body);
-      // if (results.error) {
-      //   return res.status(400).send(results.error.details[0].message);
-      // }
-
       const {
         firstName,
         lastName,
@@ -45,6 +27,8 @@ const methods = {
 
       //// Check If user exist with this Email or not ////
       const result = await User.findOne({ email: email });
+      const hashedPassword = await helpers.genHashPassword(password);
+
       if (result) {
         res.status(404).send("User already registered with this Email Address");
       } else {
@@ -53,7 +37,7 @@ const methods = {
           firstName,
           lastName,
           email,
-          password,
+          password: hashedPassword,
           phone,
           fbLink,
           profession,
@@ -288,5 +272,12 @@ const helpers = {
     } else {
       res.send("Invalid Permissions");
     }
+  },
+
+  //Encrypt Password
+  genHashPassword: async (password) => {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    return hashedPassword;
   },
 };
