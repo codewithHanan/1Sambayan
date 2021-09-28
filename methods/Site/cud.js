@@ -4,6 +4,8 @@ const Site = require("../../models/Site/Site");
 const SiteHeader = require("../../models/Site/Header");
 const SitePage = require("../../models/Site/Page");
 const { findById } = require("../../models/Site/Site");
+const User = require("../../models/User/User");
+
 const siteMethods = {
   //----- Create site -----//
   create: asyncHandler(async (req, res, next) => {
@@ -18,6 +20,7 @@ const siteMethods = {
         socialMediaLinks,
         url,
         slogan,
+        address,
         copyright,
       } = req.body.props;
 
@@ -39,6 +42,7 @@ const siteMethods = {
           copyright,
           phone,
           footer,
+          address,
           logo,
           socialMediaLinks,
         });
@@ -63,6 +67,7 @@ const siteMethods = {
         socialMediaLinks,
         url,
         slogan,
+        address,
         copyright,
       } = req.body.props;
 
@@ -103,6 +108,9 @@ const siteMethods = {
       if (copyright) {
         site.copyright = copyright;
       }
+      if (address) {
+        site.address = address;
+      }
       const updatedSite = await site.save();
 
       res.status(200).json({ message: "Success!", site: updatedSite });
@@ -115,7 +123,7 @@ const siteMethods = {
   getSite: asyncHandler(async (req, res, next) => {
     try {
       const site = await Site.find();
-      res.status(200).json({ site: site });
+      res.status(200).json({ site });
     } catch (err) {
       next(err);
     }
@@ -211,7 +219,7 @@ const sitePageMethods = {
       const site = await Site.findOne({ owner: ownerId });
       const isPage = await SitePage.findOne({
         $and: [
-          { name: nmae },
+          { name },
           {
             siteId: site._id,
           },
@@ -241,10 +249,10 @@ const sitePageMethods = {
 
       const ownerId = req.user._id;
       const site = await Site.findOne({ owner: ownerId });
-      const sitePage = await findById(pageId);
+      const sitePage = await SitePage.findById(pageId);
       const isPage = await SitePage.findOne({
         $and: [
-          { name: nmae },
+          { name },
           {
             siteId: site._id,
           },
@@ -252,16 +260,16 @@ const sitePageMethods = {
       });
 
       if (name) {
-        sitePage.name = name;
+        isPage.name = name;
       }
       if (sections) {
-        sitePage.section = sections;
+        isPage.section = sections;
       }
       if (contentBox) {
-        sitePage.contentBox;
+        isPage.contentBox;
       }
 
-      const updatedSitePage = await sitePage.save();
+      const updatedSitePage = await isPage.save();
 
       res.status(200).json({ message: "Success!", site: updatedSitePage });
     } catch (err) {
@@ -272,9 +280,10 @@ const sitePageMethods = {
   //----- Get Site settings document -----//
   getPages: asyncHandler(async (req, res, next) => {
     try {
-      const owner = req.user;
-      const site = await Site.findOne({ owner: owner._id });
-      const pages = await SitePage.find({ siteId: site._id });
+      // const owner = req.user;
+      // console.log(owner);
+      // const site = await Site.findOne({ owner: owner._id });
+      const pages = await SitePage.find();
       res.status(200).json({ pages: pages });
     } catch (err) {
       next(err);

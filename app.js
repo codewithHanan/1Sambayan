@@ -45,6 +45,8 @@ const site = require("./routes/secure/site");
 const post = require("./routes/secure/post");
 const event = require("./routes/secure/event");
 const community = require("./routes/secure/community");
+const candidate = require("./routes/secure/candidate");
+const party = require("./routes/secure/party");
 
 //----- Mount Routers -----//
 
@@ -54,6 +56,8 @@ app.use("/api/secure/site", site);
 app.use("/api/secure/post", post);
 app.use("/api/secure/event", event);
 app.use("/api/secure/community", community);
+app.use("/api/secure/candidate", candidate);
+app.use("/api/secure/party", party);
 
 //// Error Handler
 app.use((error, req, res, next) => {

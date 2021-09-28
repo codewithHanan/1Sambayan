@@ -18,12 +18,27 @@ const SiteSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
-  video: [
-    {
-      title: String,
-      buttonLink: String,
+  video: {
+    videoURL: String,
+    videoSettings: {
+      loop: {
+        type: Boolean,
+        required: false
+      },
+      controls: {
+        type: Boolean,
+        required: false
+      },
+      autoPlay: {
+        type: Boolean,
+        required: false
+      },
+      muted: {
+        type: Boolean,
+        required: false
+      }
     },
-  ],
+  },
   address: {
     street: { type: String, required: false },
     city: { type: String, required: false },
@@ -43,7 +58,6 @@ const SiteSchema = new mongoose.Schema({
   copyright: {
     type: String,
   },
-
   logo: {
     type: String,
   },
@@ -53,7 +67,6 @@ const SiteSchema = new mongoose.Schema({
     Instagram: String,
     LinkedIn: String,
   },
-
   createdAt: {
     type: Date,
     default: Date.now,

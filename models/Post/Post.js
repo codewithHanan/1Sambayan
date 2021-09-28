@@ -16,12 +16,27 @@ const PostSchema = new mongoose.Schema({
       required: false,
     },
   ],
-  video: [
-    {
-      type: String,
-      required: false,
+  video: {
+    videoURL: String,
+    videoSettings: {
+      loop: {
+        type: Boolean,
+        required: false
+      },
+      controls: {
+        type: Boolean,
+        required: false
+      },
+      autoPlay: {
+        type: Boolean,
+        required: false
+      },
+      muted: {
+        type: Boolean,
+        required: false
+      }
     },
-  ],
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",

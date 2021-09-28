@@ -29,8 +29,8 @@ const methods = {
   update: asyncHandler(async (req, res, next) => {
     try {
       const { title, description, image, video, postId } = req.body.props;
-
       let post = await Post.findById(postId);
+      console.log(post);
 
       if (title) {
         post.title = title;
