@@ -66,8 +66,19 @@ app.use((error, req, res, next) => {
   const status = error.status || 500;
   res.status(status).json({ message: message, error: error });
 });
-//// Setting Port for Server ////
+//// Setting ENV for Build ////
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static("client/build"));
+}
 
+if (process.env.NODE_ENV === "production") {
+  app.use(function (req, res, next) {
+    var protocol = req.get("x-forwarded-proto");
+    protocol == "https"
+      ? next()
+      : res.redirect("https://" + req.hostname + req.url);
+  });
+}
 //// Setting Port for Server ////
 const PORT = 3000 || process.env.PORT;
 app.listen(PORT, () => {
