@@ -4,13 +4,12 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cd client && npm run build",
-    "install-client": "cd client && npm install ",
-    "heroku-postbuild": "npm run install-client && npm run build",
-    "start": "node app.js",
     "client": "cd client && npm start",
-    "dev": "nodemon app.js"
+    "server": "nodemon app.js",
+    "build": "cd client && npm run build",
+    "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "start": "node app.js",
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
   },
   "author": "Hanan Ahmad",
   "license": "ISC",
