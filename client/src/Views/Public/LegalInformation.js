@@ -1,8 +1,8 @@
 import React from 'react'
 import { Container } from 'react-bootstrap'
-import PublicLayout from './../../layouts/Public/PublicLayout';
+import PublicLayout from '../../layouts/Public/PublicLayout';
 
-const PrivacyPolicy = () => {
+const LegalInformation = () => {
     return (
         <PublicLayout>
             <Container className="my-5">
@@ -53,4 +53,4 @@ const PrivacyPolicy = () => {
     )
 }
 
-export default PrivacyPolicy
+export default LegalInformation

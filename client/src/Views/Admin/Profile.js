@@ -4,7 +4,7 @@ import { Formik, Form, Field as Input, ErrorMessage } from "formik";
 import { Container, Card, Row, Col, CardBody, Label, FormGroup, Button } from 'reactstrap';
 import { getRequest } from "../../api/request";
 import React, { useState, useEffect } from 'react';
-import { putRequest } from './../../api/request';
+import { putRequest } from '../../api/request';
 
 const EditProfile = () => {
   const [profileData, setProfileData] = useState()

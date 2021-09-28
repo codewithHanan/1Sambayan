@@ -5,7 +5,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import Header from '../../../components/Admin/Headers/Header';
 import { Form, Formik, Field as Input } from 'formik';
 import EditorField from '../../../components/Admin/EditorFormik.d';
-import { getRequest, putRequest } from './../../../api/request';
+import { getRequest, putRequest } from '../../../api/request';
 import { useEffect } from 'react';
 
 const SiteSettingPage = () => {

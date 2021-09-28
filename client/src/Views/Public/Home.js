@@ -4,7 +4,7 @@ import { Carousel, Image, Container, Row, Col } from "react-bootstrap";
 import { Link } from 'react-router-dom';
 import { PostCard } from "../../components/Public/PostCard";
 import OwlCarousel from "react-owl-carousel";
-import PublicLayout from './../../layouts/Public/PublicLayout';
+import PublicLayout from '../../layouts/Public/PublicLayout';
 
 const Home = () => {
     const [index, setIndex] = useState(0);

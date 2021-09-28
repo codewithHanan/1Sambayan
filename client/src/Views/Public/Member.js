@@ -1,5 +1,5 @@
 import React from 'react'
-import PublicLayout from './../../layouts/Public/PublicLayout';
+import PublicLayout from '../../layouts/Public/PublicLayout';
 
 const Member = () => {
     return (

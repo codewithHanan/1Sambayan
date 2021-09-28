@@ -7,7 +7,7 @@ import Header from '../../../components/Admin/Headers/Header';
 // import { faMinus, faPlus } from '@fortawesome/free-solid-svg-icons';
 // import { v4 as uuidv4 } from 'uuid';
 import { Form, Formik, Field as Input } from 'formik';
-import { putRequest, getRequest } from './../../../api/request';
+import { putRequest, getRequest } from '../../../api/request';
 
 const HomeSetting = () => {
     const [latestPostsSection, setLatestPostsSection] = useState();
