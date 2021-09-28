@@ -79,8 +79,11 @@ if (process.env.NODE_ENV === "production") {
       : res.redirect("https://" + req.hostname + req.url);
   });
 }
+var server = http.createServer((req, res) => {
+  //your stuff
+});
 //// Setting Port for Server ////
-const PORT = 3000 || process.env.PORT;
-app.listen(PORT, () => {
+const PORT = 8080 || process.env.PORT;
+server.listen(PORT, () => {
   console.log(`Server listening to port ${PORT}`);
 });
