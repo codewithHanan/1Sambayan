@@ -5,6 +5,7 @@ const session = require("express-session");
 const dotenv = require("dotenv").config();
 const passport = require("passport");
 const cookieParser = require("cookie-parser");
+var path = require("path");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -66,12 +67,18 @@ app.use((error, req, res, next) => {
   const status = error.status || 500;
   res.status(status).json({ message: message, error: error });
 });
-//// Setting ENV for Build ////
-if (process.env.NODE_ENV === "production") {
-  app.use(express.static("client/build"));
+
+app.use(express.static("upload"));
+app.use(express.static("pdfImgaes"));
+app.use(express.static(path.join(__dirname, "client/build")));
+
+if (process.env.client == "./client/public/templates/") {
+  app.use(express.static("static"));
+} else {
+  app.use(express.static(path.join(__dirname, "client/build")));
 }
 
-if (process.env.NODE_ENV === "production") {
+if (app.get("env") === "production") {
   app.use(function (req, res, next) {
     var protocol = req.get("x-forwarded-proto");
     protocol == "https"
@@ -79,11 +86,11 @@ if (process.env.NODE_ENV === "production") {
       : res.redirect("https://" + req.hostname + req.url);
   });
 }
-var server = http.createServer((req, res) => {
-  //your stuff
+var port = process.env.PORT || 8080;
+app.listen(port, () => {
+  console.log("Listening to port " + `${port}`);
 });
-//// Setting Port for Server ////
-const PORT = 8080 || process.env.PORT;
-server.listen(PORT, () => {
-  console.log(`Server listening to port ${PORT}`);
-});
+
+if (process.env.NODE_ENV == "production") {
+  app.use(express.static("client/build"));
+}
