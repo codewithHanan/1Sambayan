@@ -9,6 +9,8 @@ import routes from "./routes";
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { createBrowserHistory } from 'history'
+const history = createBrowserHistory();
+
 // console.log(window.location.pathname);
 const getRoutes = (routes) => {
   return routes.map((prop, key) => {
@@ -35,7 +37,7 @@ const getRoutes = (routes) => {
 
 ReactDOM.render(
 
-  <BrowserRouter>
+  <BrowserRouter history={history}>
     <Switch>
       <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
       <Route path="/auth" render={(props) => <Auth {...props} />} />
