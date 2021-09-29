@@ -45,7 +45,8 @@ const methods = {
   //----- Edit Profile -----//
   editProfile: asyncHandler(async (req, res, next) => {
     try {
-      let { firstName, lastName, email, image, phone } = req.body.props;
+      let { firstName, lastName, email, phone } = req.body.props;
+      let image = req.file.filename;
       let user = req.user;
       if (firstName) {
         user.firstName = firstName;
@@ -56,48 +57,13 @@ const methods = {
       if (email) {
         user.email = email;
       }
-      if (image) {
-        user.profileImage = image;
-      }
       if (phone) {
         user.phone = phone;
-      }
-      await user.save();
-      return res.status(200).json({ message: "profile updated successfully!" });
-    } catch (err) {
-      next(err);
-    }
-  }),
-
-  //----- Edit Profile -----//
-  updateProfile: asyncHandler(async (req, res, next) => {
-    try {
-      const {
-        firstName,
-        lastName,
-        email,
-        image,
-        phone,
-      } = req.body.props;
-
-      const userId = req.user._id;
-      // console.log("ownerId", ownerId);
-      const user = await User.findOne({ _id: userId });
-      if (firstName) {
-        user.firstName = firstName;
-      }
-      if (lastName) {
-        user.lastName = lastName;
-      }
-      if (email) {
-        user.email = email;
       }
       if (image) {
         user.profileImage = image;
       }
-      if (phone) {
-        user.phone = phone;
-      }
+
       await user.save();
       return res.status(200).json({ message: "profile updated successfully!" });
     } catch (err) {

@@ -10,31 +10,29 @@ const PostSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  image: [
-    {
-      type: String,
-      required: false,
-    },
-  ],
+  image: {
+    type: String,
+    required: false,
+  },
   video: {
     videoURL: String,
     videoSettings: {
       loop: {
         type: Boolean,
-        required: false
+        required: false,
       },
       controls: {
         type: Boolean,
-        required: false
+        required: false,
       },
       autoPlay: {
         type: Boolean,
-        required: false
+        required: false,
       },
       muted: {
         type: Boolean,
-        required: false
-      }
+        required: false,
+      },
     },
   },
   owner: {

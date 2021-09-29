@@ -4,6 +4,7 @@ const bcrypt = require("bcryptjs");
 const Joi = require("joi");
 const asyncHandler = require("../../middlewares/async");
 const User = require("../../models/User/User");
+const sendEmail = require("../../services/sendEmail");
 
 //REGISTER USER API
 const methods = {
@@ -243,6 +244,34 @@ const methods = {
       res.clearCookie("token");
       res.status(200).send("Logged out successfully");
     });
+  }),
+
+  //----- Reset password ----//
+  resetPassword: asyncHandler(async (req, res, next) => {
+    try {
+      const email = req.body.email;
+      const user = await User.findOne({ email: email });
+      const resetToken = user.getResetPasswordToken();
+      await user.save({ validateBeforeSave: false });
+      const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to:`;
+
+      try {
+        await sendEmail({
+          email: user.email,
+          subject: "Password reset token",
+          message: message,
+        });
+        res.status(200).json({ success: true, data: "Email sent" });
+      } catch (error) {
+        console.log(error);
+        user.getResetPasswordToken = undefined;
+        user.resetPasswordExpire = undefined;
+        await user.save({ validateBeforeSave: false });
+        return next(new ErrorResponse("Email could not be sent", 500));
+      }
+    } catch (err) {
+      next(err);
+    }
   }),
 };
 module.exports = methods;

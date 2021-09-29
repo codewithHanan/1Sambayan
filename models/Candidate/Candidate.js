@@ -6,12 +6,10 @@ const CandidateSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  image: [
-    {
-      type: String,
-      required: false,
-    },
-  ],
+  image: {
+    type: String,
+    required: false,
+  },
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",

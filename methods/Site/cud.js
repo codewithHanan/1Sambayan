@@ -14,15 +14,21 @@ const siteMethods = {
         name,
         email,
         phone,
-        video,
         footer,
-        logo,
         socialMediaLinks,
         url,
         slogan,
         address,
         copyright,
       } = req.body.props;
+      let video, logo;
+
+      if (req.files.video) {
+        video = req.files.video[0].filename;
+      }
+      if (req.files.logo) {
+        logo = req.files.logo[0].filename;
+      }
 
       //----- Check If user exist with this Email or not -----//
       const IsSite = await Site.findOne({ email: email });
@@ -61,18 +67,23 @@ const siteMethods = {
         name,
         email,
         phone,
-        video,
         footer,
-        logo,
         socialMediaLinks,
         url,
         slogan,
         address,
         copyright,
       } = req.body.props;
+      let video, logo;
+
+      if (req.files.video) {
+        video = req.files.video[0].filename;
+      }
+      if (req.files.logo) {
+        logo = req.files.logo[0].filename;
+      }
 
       const ownerId = req.user._id;
-      console.log("ownerId", ownerId);
       const site = await Site.findOne({ owner: ownerId });
 
       if (name) {
@@ -134,7 +145,15 @@ const siteHeaderMethods = {
   //----- Create Header -----//
   create: asyncHandler(async (req, res, next) => {
     try {
-      const { title, description, image, backgroundImage } = req.body.props;
+      const { title, description } = req.body.props;
+      let image, backgroundImage;
+
+      if (req.files.image) {
+        image = req.files.image[0].filename;
+      }
+      if (req.files.backgroundImage) {
+        image = req.files.backgroundImage[0].filename;
+      }
       const siteOwner = req.user._id;
       const site = await Site.findOne({ owner: siteOwner });
       //----- Check If user exist with this Email or not -----//
@@ -161,8 +180,16 @@ const siteHeaderMethods = {
   //----- Update Site Header -----//
   update: asyncHandler(async (req, res, next) => {
     try {
-      const { title, description, image, backgroundImage, headerId } =
-        req.body.props;
+      const { title, description, headerId } = req.body.props;
+
+      let image, backgroundImage;
+
+      if (req.files.image) {
+        image = req.files.image[0].filename;
+      }
+      if (req.files.backgroundImage) {
+        image = req.files.backgroundImage[0].filename;
+      }
 
       let header = await SiteHeader.findById(headerId);
 

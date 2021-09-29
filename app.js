@@ -70,7 +70,7 @@ app.use((error, req, res, next) => {
 
 app.use(express.static("upload"));
 app.use(express.static("pdfImgaes"));
-app.use(express.static(path.join(__dirname, "client/build")));
+app.use(express.static(path.join(__dirname, "client/build", "index.html")));
 
 if (process.env.client == "./client/public/templates/") {
   app.use(express.static("static"));

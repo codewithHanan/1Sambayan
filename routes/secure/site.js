@@ -9,11 +9,32 @@ const {
 } = require("../../methods/Site/cud");
 const { create, update, getSite } = siteMethods;
 const { protect, authorize } = require("../../middlewares/auth");
+const upload = require("../../services/multer");
+const siteUploads = upload.fields([
+  {
+    name: "video",
+    maxCount: 1,
+  },
+  {
+    name: "logo",
+    maxCount: 1,
+  },
+]);
+const headerUploads = upload.fields([
+  {
+    name: "image",
+    maxCount: 1,
+  },
+  {
+    name: "backgroundImage",
+    maxCount: 1,
+  },
+]);
 
 //----- Site -----//
 router.get("/", getSite);
-router.post("/create-site", [protect, authorize("admin")], create);
-router.put("/update-site", [protect, authorize("admin")], update);
+router.post("/create-site", [protect, authorize("admin"), siteUploads], create);
+router.put("/update-site", [protect, authorize("admin"), siteUploads], update);
 
 //----- Site Header-----//
 router.get("/", siteHeaderMethods.getSiteHeader);

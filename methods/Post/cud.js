@@ -4,7 +4,7 @@ const Site = require("../../models/Site/Site");
 const Post = require("../../models/Post/Post");
 
 const methods = {
-  //----- Create Header -----//
+  //----- Create post -----//
   create: asyncHandler(async (req, res, next) => {
     try {
       const { title, description, image, video } = req.body.props;
@@ -25,7 +25,7 @@ const methods = {
     }
   }),
 
-  //----- Update Site Header -----//
+  //----- Update post -----//
   update: asyncHandler(async (req, res, next) => {
     try {
       const { title, description, image, video, postId } = req.body.props;
@@ -53,10 +53,11 @@ const methods = {
     }
   }),
 
-  //----- Get site Header -----//
+  //----- Get post -----//
   getPost: asyncHandler(async (req, res, next) => {
     try {
-      const postId = req.body.postId;
+      const postId = req.query.postId;
+      if (!postId) res.status(400).json({ message: "Provide post id" });
       const post = await Post.findById(postId);
       res.status(200).json({ post: post });
     } catch (err) {
@@ -64,11 +65,34 @@ const methods = {
     }
   }),
 
-  //----- Get list of site headers -----//
+  //----- Get list of posts -----//
   getPosts: asyncHandler(async (req, res, next) => {
     try {
       const posts = await Post.find({});
       res.status(200).json({ posts: posts });
+    } catch (err) {
+      next(err);
+    }
+  }),
+
+  //----- Delete Post -----//
+  deletePost: asyncHandler(async (req, res, next) => {
+    try {
+      const postId = req.body.postId;
+      if (!postId) res.status(400).json({ message: "Provide post id" });
+      await Post.findByIdAndDelete(postId);
+      res.status(200).json({ message: "Successfully Deleted!" });
+    } catch (err) {
+      next(err);
+    }
+  }),
+
+  //----- Search Post -----//
+  search: asyncHandler(async (req, res, next) => {
+    try {
+      const title = req.body.title;
+      const posts = await Post.find({ title: title });
+      res.status(200).json({ posts });
     } catch (err) {
       next(err);
     }

@@ -7,13 +7,15 @@ const {
   update,
   getEvent,
   getEvents,
+  search,
 } = require("../../methods/Event/cud");
 const { protect, authorize } = require("../../middlewares/auth");
 
 //----- EVENT -----//
 router.get("/", [protect, authorize("admin")], getEvent);
-router.get("/event-list", [protect, authorize("admin")], getEvents);
+router.get("/event-list", getEvents);
 router.post("/create", [protect, authorize("admin")], create);
 router.put("/update", [protect, authorize("admin")], update);
+router.put("/search", search);
 
 module.exports = router;

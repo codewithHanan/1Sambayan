@@ -71,6 +71,17 @@ const methods = {
       next(err);
     }
   }),
+
+  //----- Search Event -----//
+  search: asyncHandler(async (req, res, next) => {
+    try {
+      const title = req.body.title;
+      const events = await Event.find({ title: title });
+      res.status(200).json({ events });
+    } catch (err) {
+      next(err);
+    }
+  }),
 };
 
 module.exports = methods;

@@ -10,12 +10,11 @@ const EventSchema = new mongoose.Schema({
     type: String,
     required: false,
   },
-  image: [
-    {
-      type: String,
-      required: false,
-    },
-  ],
+  image: {
+    type: String,
+    required: false,
+  },
+
   video: [
     {
       type: String,
