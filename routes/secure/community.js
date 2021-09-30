@@ -11,7 +11,7 @@ const {
 const { protect, authorize } = require("../../middlewares/auth");
 
 //----- Community -----//
-router.get("/", [protect, authorize("admin")], getCommunity);
+router.get("/", getCommunity);
 router.get("/community-list", getCommunities);
 router.post("/create", [protect, authorize("admin")], create);
 router.put("/update", [protect, authorize("admin")], update);

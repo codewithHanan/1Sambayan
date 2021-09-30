@@ -12,7 +12,7 @@ const {
 const { protect, authorize } = require("../../middlewares/auth");
 
 //----- EVENT -----//
-router.get("/", [protect, authorize("admin")], getEvent);
+router.get("/", getEvent);
 router.get("/event-list", getEvents);
 router.post("/create", [protect, authorize("admin")], create);
 router.put("/update", [protect, authorize("admin")], update);
