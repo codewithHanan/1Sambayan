@@ -7,7 +7,12 @@ const methods = {
   //----- Create Header -----//
   create: asyncHandler(async (req, res, next) => {
     try {
-      const { title, image, } = req.body.props;
+      const { title } = req.body.props;
+      let image;
+
+      if (req.file) {
+        image = req.file.filename;
+      }
       const ownerId = req.user._id;
 
       // Saving User in DataBase
@@ -28,7 +33,12 @@ const methods = {
   //----- Update Site Header -----//
   update: asyncHandler(async (req, res, next) => {
     try {
-      const { title, image, candidateId } = req.body.props;
+      const { title, candidateId } = req.body.props;
+      let image;
+
+      if (req.file) {
+        image = req.file.filename;
+      }
       let candidate = await Candidate.findById(candidateId);
       console.log(candidate);
 
@@ -41,7 +51,9 @@ const methods = {
 
       const updatedcandidate = await candidate.save();
 
-      res.status(200).json({ message: "Success!", candidate: updatedcandidate });
+      res
+        .status(200)
+        .json({ message: "Success!", candidate: updatedcandidate });
     } catch (err) {
       next(err);
     }

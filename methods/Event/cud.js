@@ -5,7 +5,15 @@ const methods = {
   //----- Create Event -----//
   create: asyncHandler(async (req, res, next) => {
     try {
-      const { title, description, image, video } = req.body.props;
+      const { title, description } = req.body.props;
+      let video, image;
+
+      if (req.files.video) {
+        video = req.files.video[0].filename;
+      }
+      if (req.files.image) {
+        image = req.files.image[0].filename;
+      }
       const ownerId = req.user._id;
 
       // Saving User in DataBase
@@ -26,8 +34,15 @@ const methods = {
   //----- Update Event -----//
   update: asyncHandler(async (req, res, next) => {
     try {
-      const { title, description, image, video, eventId } = req.body.props;
+      const { title, description, eventId } = req.body.props;
+      let video, image;
 
+      if (req.files.video) {
+        video = req.files.video[0].filename;
+      }
+      if (req.files.image) {
+        image = req.files.image[0].filename;
+      }
       let event = await Event.findById(eventId);
 
       if (title) {

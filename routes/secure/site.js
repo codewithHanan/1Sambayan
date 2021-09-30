@@ -41,12 +41,12 @@ router.get("/", siteHeaderMethods.getSiteHeader);
 router.get("/header-list", siteHeaderMethods.getSiteHeaders);
 router.post(
   "/create-header",
-  [protect, authorize("admin")],
+  [protect, authorize("admin"), headerUploads],
   siteHeaderMethods.create
 );
 router.put(
   "/update-header",
-  [protect, authorize("admin")],
+  [protect, authorize("admin"), headerUploads],
   siteHeaderMethods.update
 );
 

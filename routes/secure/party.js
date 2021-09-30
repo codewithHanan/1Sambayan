@@ -9,11 +9,20 @@ const {
   getParty,
 } = require("../../methods/Party/cud");
 const { protect, authorize } = require("../../middlewares/auth");
+const upload = require("../../services/multer");
 
 //----- POST -----//
 router.get("/", getParty);
 router.get("/party-list", getParties);
-router.post("/create", [protect, authorize("admin")], create);
-router.put("/update", [protect, authorize("admin")], update);
+router.post(
+  "/create",
+  [protect, authorize("admin"), upload.single("image")],
+  create
+);
+router.put(
+  "/update",
+  [protect, authorize("admin"), upload.single("image")],
+  update
+);
 
 module.exports = router;

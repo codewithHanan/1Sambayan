@@ -7,7 +7,15 @@ const methods = {
   //----- Create post -----//
   create: asyncHandler(async (req, res, next) => {
     try {
-      const { title, description, image, video } = req.body.props;
+      const { title, description } = req.body.props;
+      let image, video;
+
+      if (req.files.video) {
+        video = req.files.video[0].filename;
+      }
+      if (req.files.image) {
+        image = req.files.image[0].filename;
+      }
       const ownerId = req.user._id;
 
       // Saving User in DataBase
@@ -28,10 +36,16 @@ const methods = {
   //----- Update post -----//
   update: asyncHandler(async (req, res, next) => {
     try {
-      const { title, description, image, video, postId } = req.body.props;
-      let post = await Post.findById(postId);
-      console.log(post);
+      const { title, description, postId } = req.body.props;
+      let image, video;
 
+      if (req.files.video) {
+        video = req.files.video[0].filename;
+      }
+      if (req.files.image) {
+        image = req.files.image[0].filename;
+      }
+      let post = await Post.findById(postId);
       if (title) {
         post.title = title;
       }
@@ -91,6 +105,8 @@ const methods = {
   search: asyncHandler(async (req, res, next) => {
     try {
       const title = req.body.title;
+      console.log("title", title);
+
       const posts = await Post.find({ title: title });
       res.status(200).json({ posts });
     } catch (err) {

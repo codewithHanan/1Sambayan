@@ -5,7 +5,12 @@ const methods = {
   //----- Create Community -----//
   create: asyncHandler(async (req, res, next) => {
     try {
-      const { title, description, image, video } = req.body.props;
+      const { title, description } = req.body.props;
+      let image;
+
+      if (req.file) {
+        image = req.file.filename;
+      }
       const ownerId = req.user._id;
 
       // Saving User in DataBase
@@ -13,7 +18,6 @@ const methods = {
         title,
         description,
         image,
-        video,
         owner: ownerId,
       });
 
@@ -26,9 +30,12 @@ const methods = {
   //----- Update Community -----//
   update: asyncHandler(async (req, res, next) => {
     try {
-      const { title, description, designation, image, video, communityId } =
-        req.body.props;
+      const { title, description, designation, communityId } = req.body.props;
+      let image;
 
+      if (req.file) {
+        image = req.file.filename;
+      }
       let community = await Community.findById(communityId);
 
       if (title) {

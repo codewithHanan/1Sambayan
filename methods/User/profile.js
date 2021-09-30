@@ -46,7 +46,11 @@ const methods = {
   editProfile: asyncHandler(async (req, res, next) => {
     try {
       let { firstName, lastName, email, phone } = req.body.props;
-      let image = req.file.filename;
+      let image;
+      if (req.file) {
+        image = req.file.filename;
+      }
+
       let user = req.user;
       if (firstName) {
         user.firstName = firstName;
