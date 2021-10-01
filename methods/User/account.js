@@ -246,14 +246,14 @@ const methods = {
     });
   }),
 
-  //----- Reset password ----//
-  resetPassword: asyncHandler(async (req, res, next) => {
+  //----- Mail to reset password ----//
+  mailForResetPassword: asyncHandler(async (req, res, next) => {
     try {
       const email = req.body.email;
       const user = await User.findOne({ email: email });
       const resetToken = user.getResetPasswordToken();
       await user.save({ validateBeforeSave: false });
-      const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to:`;
+      const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to:${resetToken}`;
 
       try {
         await sendEmail({
@@ -263,14 +263,30 @@ const methods = {
         });
         res.status(200).json({ success: true, data: "Email sent" });
       } catch (error) {
-        console.log(error);
-        user.getResetPasswordToken = undefined;
-        user.resetPasswordExpire = undefined;
-        await user.save({ validateBeforeSave: false });
-        return next(new ErrorResponse("Email could not be sent", 500));
+        res.status(404).json({ message: "Internelm Error" });
       }
     } catch (err) {
       next(err);
+    }
+  }),
+
+  //----- Reset password ----//
+  resetPassword: asyncHandler(async (req, res, next) => {
+    try {
+      const resetPasswordToken = req.params.resetPasswordToken;
+      const password = req.body.password;
+      const hashedPassword = await helpers.genHashPassword(password);
+
+      let user = await User.findOne({ resetPasswordToken: resetPasswordToken });
+      user.password = hashedPassword;
+      user.resetPasswordToken = undefined;
+      user.restPasswordExpires = undefined;
+      await user.save({ validateBeforeSave: false });
+      res
+        .status(200)
+        .json({ message: "Password has been Updated successfully" });
+    } catch (error) {
+      next(error);
     }
   }),
 };
